@@ -29,8 +29,13 @@ traindatacomplete <- cbind(trainydata, subjecttrain, traindata)
 ## To obtain one dataset with all the relevant data I combine them both
 full_data <- rbind(traindatacomplete, testdatacomplete)
 
+## Now I check if the dataset 'full_data' contains any NA's. If so I have
+## to take further action, if not I can go on.
+any(is.na(full_data))
+
 ## At this point I completed the first part of the assignment: Merges the 
 ## training and the test sets to create one data set.
+
 
 ## Next we go to the second part: Extracts only the measurements on the mean 
 ## and standard deviation for each measurement. 
