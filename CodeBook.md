@@ -89,24 +89,29 @@ The complete list of variables of each feature vector is available in 'features.
 The assignment
 ==============
 
-The assignment was to create one R script called run_analysis.R that does the following. 
--1	Merges the training and the test sets to create one data set.
-#2	Extracts only the measurements on the mean and standard deviation for each measurement. 
-%3	Uses descriptive activity names to name the activities in the data set
-4	Appropriately labels the data set with descriptive variable names. 
-5	From the data set in step 4, creates a second, independent tidy data set with the average 	of each variable for each activity and each subject.
+The assignment was to create one R script called run_analysis.R that does the following.
+  
+1.	Merges the training and the test sets to create one data set.
+  
+2.	Extracts only the measurements on the mean and standard deviation for each measurement. 
+  
+3.	Uses descriptive activity names to name the activities in the data set
+  
+4.	Appropriately labels the data set with descriptive variable names. 
+  
+5.	From the data set in step 4, creates a second, independent tidy data set with the average 	of each variable for each activity and each subject.
 
 The variables
 =============
 
-The assignments was carried out as stated above. So two datasets are created when running the cript. The first (assignment step 1 to 4) named 'full_data_merged' contains all the 10,299 observations (both from 'test' and 'train', but the values are calculations - mean/std - on actual observations, so probably I should not call them observations, but lines?) and have the following variables:
+The assignments was carried out as stated above. So two datasets are created when running the script. The first (assignment step 1 to 4) named **'full_data_merged'** contains all the 10,299 observations (both from 'test' and 'train', but the values are calculations - mean/std - on actual observations, so probably I should not call them observations, but lines?) and have the following variables:
 1)	activity.name
 2)	subject
 3-88)	The original variable names (features), where the terms 'mean' or 'std' occurred
 
 All other variables in the original datasets were deleted.
 
-The second dataset (assignment step 5) named group_data_mean is a dataset with the same 88 variables, but with 180 lines, because there are 180 groups i.e.: 6 activities multiplied by 30 subjects = 180 groups. 
+The second dataset (assignment step 5) named **group_data_mean** is a dataset with the same 88 variables, but with 180 lines, because there are 180 groups i.e.: 6 activities multiplied by 30 subjects = 180 groups. 
 
 For both datasets the units are the same as the original datasets as stated earlier.
 
