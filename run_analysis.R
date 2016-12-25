@@ -2,17 +2,17 @@
 library(dplyr)
 
 ##Setting the working directory
-setwd("C:/Users/Marlein/Documents/datasciencecoursera/Getting and cleaning Data/Week 4/UCI HAR Dataset")
+setwd("C:/Users/")
 
 
 ## First I will read in all datasets seperately. The names of the data are 
 ## recognizable by their original names.
 ## At first I red in the 'features', because this file contains the names of the variables
 ## and they need some modification (the parenthesis removed and the data as factors)
-## For clearlyness I add another variable, so the original variable stays as original
+## I add another variable, so the original variable stays as original
 features <- read.table("features.txt", stringsAsFactors=FALSE)
 features <- cbind(features, names=gsub("()","",features$V2, fixed=TRUE), stringsAsFactors=FALSE)
-## And now the ret of the data:
+## And now the rest of the data:
 traindata <- read.table("train/X_train.txt", col.names = features$names)
 testdata <-  read.table("test/X_test.txt", col.names = features$names)
 trainydata <- read.table("train/Y_train.txt", col.names = "activity")
@@ -71,5 +71,3 @@ colnames(full_data_merged) <- gsub("Bodybody", "Body", colnames(full_data_merged
 ## 'summirise_each' command. Then I write this to the file run_data_mean.txt.
 group_data_mean <- full_data_merged %>% group_by(activity.name, subject) %>%
         summarise_each(funs(mean))
-
-write.table(group_data_mean, file="run_data_mean.txt", row.name=FALSE)
