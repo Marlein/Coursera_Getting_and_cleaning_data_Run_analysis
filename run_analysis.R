@@ -71,3 +71,5 @@ colnames(full_data_merged) <- gsub("Bodybody", "Body", colnames(full_data_merged
 ## 'summirise_each' command. Then I write this to the file run_data_mean.txt.
 group_data_mean <- full_data_merged %>% group_by(activity.name, subject) %>%
         summarise_each(funs(mean))
+
+write.table(group_data_mean, file="run_data_mean.txt", row.name=FALSE)
