@@ -1,70 +1,94 @@
-==================================================================
-Human Activity Recognition Using Smartphones Dataset
-Version 1.0
-==================================================================
-Jorge L. Reyes-Ortiz, Davide Anguita, Alessandro Ghio, Luca Oneto.
-Smartlab - Non Linear Complex Systems Laboratory
-DITEN - Università degli Studi di Genova.
-Via Opera Pia 11A, I-16145, Genoa, Italy.
-activityrecognition@smartlab.ws
-www.smartlab.ws
-==================================================================
+---
+title: "ReadMe_run_analysis.R"
+author: "Marlein"
+date: "24 december 2016"
+output: html_document
+---
 
-The experiments have been carried out with a group of 30 volunteers within an age bracket of 19-48 years. Each person performed six activities (WALKING, WALKING_UPSTAIRS, WALKING_DOWNSTAIRS, SITTING, STANDING, LAYING) wearing a smartphone (Samsung Galaxy S II) on the waist. Using its embedded accelerometer and gyroscope, we captured 3-axial linear acceleration and 3-axial angular velocity at a constant rate of 50Hz. The experiments have been video-recorded to label the data manually. The obtained dataset has been randomly partitioned into two sets, where 70% of the volunteers was selected for generating the training data and 30% the test data. 
+This ReadMe belongs to the peer graded assignment of week 4 of the Course Getting and Cleaning Data from Coursera. To understand the steps I took, I first repeat the assigment itself.
 
-The sensor signals (accelerometer and gyroscope) were pre-processed by applying noise filters and then sampled in fixed-width sliding windows of 2.56 sec and 50% overlap (128 readings/window). The sensor acceleration signal, which has gravitational and body motion components, was separated using a Butterworth low-pass filter into body acceleration and gravity. The gravitational force is assumed to have only low frequency components, therefore a filter with 0.3 Hz cutoff frequency was used. From each window, a vector of features was obtained by calculating variables from the time and frequency domain. See 'features_info.txt' for more details. 
+## The original assignemnt
 
-For each record it is provided:
-======================================
+Instructions
+The purpose of this project is to demonstrate your ability to collect, work with, and clean a data set.
 
-- Triaxial acceleration from the accelerometer (total acceleration) and the estimated body acceleration.
-- Triaxial Angular velocity from the gyroscope. 
-- A 561-feature vector with time and frequency domain variables. 
-- Its activity label. 
-- An identifier of the subject who carried out the experiment.
+Review criteria
 
-The dataset includes the following files:
-=========================================
+1. The submitted data set is tidy.
+  
+2. The Github repo contains the required scripts.
+  
+3. GitHub contains a code book that modifies and updates the available codebooks with the data to indicate all the variables and summaries calculated, along with units, and any other relevant information.
+  
+4. The README that explains the analysis files is clear and understandable.
+  
+5. The work submitted for this project is the work of the student who submitted it.
 
-- 'README.txt'
+The purpose of this project is to demonstrate your ability to collect, work with, and clean a data set. The goal is to prepare tidy data that can be used for later analysis. You will be graded by your peers on a series of yes/no questions related to the project. 
 
-- 'features_info.txt': Shows information about the variables used on the feature vector.
+You will be required to submit: 1) a tidy data set as described below, 2) a link to a Github repository with your script for performing the analysis, and 3) a code book that describes the variables, the data, and any transformations or work that you performed to clean up the data called CodeBook.md. You should also include a README.md in the repo with your scripts. This repo explains how all of the scripts work and how they are connected.
 
-- 'features.txt': List of all features.
+One of the most exciting areas in all of data science right now is wearable computing - see for example this article . Companies like Fitbit, Nike, and Jawbone Up are racing to develop the most advanced algorithms to attract new users. The data linked to from the course website represent data collected from the accelerometers from the Samsung Galaxy S smartphone. A full description is available at the site where the data was obtained:
+http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones 
 
-- 'activity_labels.txt': Links the class labels with their activity name.
+Here are the data for the project:
+https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip 
 
-- 'train/X_train.txt': Training set.
+You should create one R script called run_analysis.R that does the following. 
 
-- 'train/y_train.txt': Training labels.
+1) Merges the training and the test sets to create one data set.
 
-- 'test/X_test.txt': Test set.
+2) Extracts only the measurements on the mean and standard deviation for each measurement. 
 
-- 'test/y_test.txt': Test labels.
+3) Uses descriptive activity names to name the activities in the data set
 
-The following files are available for the train and test data. Their descriptions are equivalent. 
+4) Appropriately labels the data set with descriptive variable names. 
 
-- 'train/subject_train.txt': Each row identifies the subject who performed the activity for each window sample. Its range is from 1 to 30. 
+5) From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject.
 
-- 'train/Inertial Signals/total_acc_x_train.txt': The acceleration signal from the smartphone accelerometer X axis in standard gravity units 'g'. Every row shows a 128 element vector. The same description applies for the 'total_acc_x_train.txt' and 'total_acc_z_train.txt' files for the Y and Z axis. 
+# The steps explained
 
-- 'train/Inertial Signals/body_acc_x_train.txt': The body acceleration signal obtained by subtracting the gravity from the total acceleration. 
+First it is neccesary to load the dplyr package with ```library(dplyr)```
 
-- 'train/Inertial Signals/body_gyro_x_train.txt': The angular velocity vector measured by the gyroscope for each window sample. The units are radians/second. 
+Next I set the working directory with 
+```setwd("C:/Users/..... etc ")``` for privacy reasons I did not state my actual working directory.
 
-Notes: 
-======
-- Features are normalized and bounded within [-1,1].
-- Each feature vector is a row on the text file.
 
-For more information about this dataset contact: activityrecognition@smartlab.ws
+Then I read in all datasets seperately. The names of the data are recognizable by their original names. At first I read in the 'features', because this file contains the names of the variables and they need some modification (the parenthesis removed and the data as factors) I added another variable, so the original variable stays as original. 
 
-License:
-========
-Use of this dataset in publications must be acknowledged by referencing the following publication [1] 
+So reading in with ```features <- read.table("features.txt", stringsAsFactors=FALSE)``` and then adding the variable 
+```features <- cbind(features, names=gsub("()","",features$V2, fixed=TRUE), stringsAsFactors=FALSE)```
 
-[1] Davide Anguita, Alessandro Ghio, Luca Oneto, Xavier Parra and Jorge L. Reyes-Ortiz. Human Activity Recognition on Smartphones using a Multiclass Hardware-Friendly Support Vector Machine. International Workshop of Ambient Assisted Living (IWAAL 2012). Vitoria-Gasteiz, Spain. Dec 2012
+Then I read in the rest of the data with ```traindata <- read.table("train/X_train.txt", col.names = features$names)``` and so I did for all of the datasets using the appropriate and logical names for the columns.
 
-This dataset is distributed AS-IS and no responsibility implied or explicit can be addressed to the authors or their institutions for its use or misuse. Any commercial use is prohibited.
 
-Jorge L. Reyes-Ortiz, Alessandro Ghio, Luca Oneto, Davide Anguita. November 2012.
+Next I made two datasets - one for train and one for test - where the activity-levels and subject are combined with the measurements
+```testdatacomplete <- cbind(testydata, subjecttest, testdata)
+traindatacomplete <- cbind(trainydata, subjecttrain, traindata)```
+
+To obtain one dataset with all the relevant data I combine them both with ```full_data <- rbind(traindatacomplete, testdatacomplete)```
+
+I checked if the dataset 'full_data' contains any NA's with ```any(is.na(full_data))```. There were no NA's, so no further action was needed.
+
+At this point I completed the first part of the assignment: Merges the training and the test sets to create one data set.
+
+Next we go to the second part: Extracts only the measurements on the mean and standard deviation for each measurement. I extract only the variables (columns) with the name "mean" an "std" in it. Of course, the first two variables "activity_id", and "subject" must be extracted too.
+```full_data_mean_and_std <- select(full_data, activity, subject, contains("mean"), contains("std"))```
+This completes step 2.
+
+
+Next is step 3: Uses descriptive activity names to name the activities in the data set. 
+I merged the "full_data_mean_and_std" with the "activity_labels", where the 
+key in "full_data_mean_and_std"(by.x) is "activity" and the key in "activity_labels" (by.y) is "V1".
+```full_data_merged <- merge(activity_labels, full_data_mean_and_std, by.y = "activity", by.x = "V1", sort = FALSE)```
+
+Because this dataset contains two variables that holds the same kind of data, i.e. "V1" and "activity.name", it does not meet the rules of a tidy data set. So I removed the column "V1" with ```full_data_merged <- select(full_data_merged,-V1)``` and This completes step 3.
+
+Step 4. For the colnames to be tidy, I replaced all '-' for "_". Also there were some names with 'Bodybody' in it, so I changed it to 'Body' with ```colnames(full_data_merged) <- gsub("[-]", "_", colnames(full_data_merged))
+colnames(full_data_merged) <- gsub("Bodybody", "Body", colnames(full_data_merged))```
+
+
+Step 5. From 'full_data_merged' I create 'group_data_mean'by grouping by activity.name (6 different names) and subject (30 subjects). Next I summerise all variables using the 'summirise_each' command. Then I write this to the file run_data_mean.txt.
+```group_data_mean <- full_data_merged %>% group_by(activity.name, subject) %>% summarise_each(funs(mean))```
+
+End of ReadMe
